@@ -7,12 +7,10 @@ name: BuildAndTest
 run-name: ${{ github.actor }} is running first exercise 🚀
 on: [push]
 jobs:
-  Test-NextJS-App:
+  Build-NextJS-App:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+    
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
@@ -22,6 +20,29 @@ jobs:
       - name: Build application
         run: |
           npm run build
+
+      - name: Cache "node_modules"
+      id: cache-node
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node_modules
+      
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+  Test-NextJS-App:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Restore cached "node_modules"
+        id: cache-node_modules-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node_modules
+
       - name: Run Cypress tests
         run: npm run e2e:headless
         continue-on-error: true
@@ -32,10 +53,3 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos/
-
-      # - name: Download Cypress test videos
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: cypress-videos
-      #     path: /home/runner/work/cours-devops/cours-devops/cypress/videos/
-      - run: echo "🍏 This job's status is ${{ job.status }}."
