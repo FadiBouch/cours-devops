@@ -23,4 +23,9 @@ jobs:
         run: |
           npm run build
       - run: npm run e2e:headless
+      - name: Download Cypress test videos
+        uses: actions/download-artifact@v4
+        with:
+          name: cypress-videos
+          path: /home/runner/work/cours-devops/cours-devops/cypress/videos/
       - run: echo "🍏 This job's status is ${{ job.status }}."
