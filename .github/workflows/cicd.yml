@@ -17,20 +17,7 @@ jobs:
       - run: | 
           npm install
           npm run build
-      - run: npm run e2e:headless
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
-          retention-days: 5
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-          retention-days: 5
-  
+
   test:
     strategy:
       matrix:
@@ -49,6 +36,8 @@ jobs:
       - name: run Cypress test 
         uses: cypress-io/github-action@v6
         with: 
+          install: false
+          start: npm run dev
           browser: ${{ matrix.browser }}
       - name: Upload Cypress videos
         uses: actions/upload-artifact@v4
@@ -56,5 +45,11 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos/
+          retention-days: 5
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
           retention-days: 5
         
