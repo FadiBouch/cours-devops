@@ -12,10 +12,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: npm install and build application
-        run: |
-          npm install
-          npm run build
       - name: Cache "node_modules"
         id: cache-node
         uses: actions/cache@v4
@@ -24,6 +20,10 @@ jobs:
             node_modules
             ../.cache/Cypress
           key: ${{ runner.os }}-node_modules
+      - name: npm install and build application
+        run: |
+          npm install
+          npm run build
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
   Test-NextJS-App:
