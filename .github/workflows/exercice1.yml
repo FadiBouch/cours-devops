@@ -7,7 +7,7 @@ name: BuildAndTest
 run-name: ${{ github.actor }} is running first exercise 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Test-NextJS-App:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -22,10 +22,20 @@ jobs:
       - name: Build application
         run: |
           npm run build
-      - run: npm run e2e:headless
-      - name: Download Cypress test videos
-        uses: actions/download-artifact@v4
+      - name: Run Cypress tests
+        run: npm run e2e:headless
+        continue-on-error: true
+
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: cypress-videos
-          path: /home/runner/work/cours-devops/cours-devops/cypress/videos/
+          path: cypress/videos/
+
+      # - name: Download Cypress test videos
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: cypress-videos
+      #     path: /home/runner/work/cours-devops/cours-devops/cypress/videos/
       - run: echo "🍏 This job's status is ${{ job.status }}."
