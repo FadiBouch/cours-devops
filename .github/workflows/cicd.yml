@@ -46,7 +46,10 @@ jobs:
             node_modules
             /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
-      - run: npx cypress run -b ${{ matrix.browser }}
+      - name: run Cypress test 
+        uses: cypress-io/github-action@v6
+        with: 
+          browser: ${{ matrix.browser }}
       - name: Upload Cypress videos
         uses: actions/upload-artifact@v4
         if: always()
