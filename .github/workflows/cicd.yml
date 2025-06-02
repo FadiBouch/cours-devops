@@ -32,6 +32,9 @@ jobs:
           retention-days: 5
   
   test:
+    strategy:
+      matrix:
+        browser: [chrome, edge]
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -43,7 +46,7 @@ jobs:
             node_modules
             /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
-      - run: npm run e2e:headless
+      - run: npx cypress run -b ${{ matrix.browser }}
       - name: Upload Cypress videos
         uses: actions/upload-artifact@v4
         if: always()
