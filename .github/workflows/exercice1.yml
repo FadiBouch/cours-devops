@@ -19,6 +19,7 @@ jobs:
           path: 
             node_modules
             ../.cache/Cypress
+          key: cached-node_modules
       - name: npm install and build application
         run: |
           npm install
@@ -38,6 +39,7 @@ jobs:
           path: |
             node_modules
             ../.cache/Cypress
+          key: cached-node_modules
       - name: Run Cypress tests
         run: npm run e2e:headless
         continue-on-error: true
