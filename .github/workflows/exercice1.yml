@@ -28,6 +28,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
   Test-NextJS-App:
+    needs: Build-NextJS-App
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
