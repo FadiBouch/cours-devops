@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-  build-push:
+  build:
     runs-on: ubuntu-latest
     steps:
       - run: ls -lah
@@ -10,7 +10,9 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
-          path: node_modules
+          path: |
+            node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
       - run: | 
           npm install
@@ -37,7 +39,9 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache/restore@v4
         with:
-          path: node_modules
+          path: |
+            node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
       - run: npm run e2e:headless
       - name: Upload Cypress videos
