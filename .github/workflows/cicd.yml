@@ -56,22 +56,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.5.4
+      - name: SSH connection
+        uses: appleboy/ssh-action@v1
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-
-      - name: Deploy via SSH
-        run: | 
-            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF' 
-            cd ~/cours-devops  
-            git pull origin main 
-            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm install 
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/cours-devops
+            git pull origin main
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm install
             /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm run build
-            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npx pm2 delete cours-devops || true
-            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npx pm2 start npm --name "cours-devops" -- run start
-            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npx pm2 save
             /home/ubuntu/.nvm/versions/node/v24.1.0/bin/pm2 restart cours-devops
