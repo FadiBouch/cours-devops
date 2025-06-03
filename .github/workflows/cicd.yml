@@ -56,14 +56,22 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH connection
-        uses: appleboy/ssh-action@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd ~/cours-devops &&
-            git pull origin main &&
-            npm install &&
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Deploy via SSH
+        run: | 
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ~/cours-devops 
+            git pull origin main 
+            npm install 
+            npm run build
+            npx pm2 delete cours-devops || true
+            npx pm2 start npm --name "cours-devops" -- run start
+            npx pm2 save
             pm2 restart cours-devops
