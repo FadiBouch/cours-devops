@@ -56,7 +56,7 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: gihub.ref_name == 'main'
+    if: github.ref_name == 'main'
     steps:
       - name: SSH connection
         uses: appleboy/ssh-action@v1
