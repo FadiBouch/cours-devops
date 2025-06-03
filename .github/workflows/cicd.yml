@@ -67,4 +67,5 @@ jobs:
             git pull origin main
             /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm install
             /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm run build
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/pm2 start npm --name "cours-devops" -- run start
             /home/ubuntu/.nvm/versions/node/v24.1.0/bin/pm2 restart cours-devops
