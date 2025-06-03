@@ -63,5 +63,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            cd ~/cours-devops
             git pull 
-            pm2 restart all
+            pm2 restart cours-devops
