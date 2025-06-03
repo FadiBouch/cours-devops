@@ -66,12 +66,12 @@ jobs:
 
       - name: Deploy via SSH
         run: | 
-            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ~/cours-devops 
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF' 
+            cd ~/cours-devops  
             git pull origin main 
-            npm install 
-            npm run build
-            npx pm2 delete cours-devops || true
-            npx pm2 start npm --name "cours-devops" -- run start
-            npx pm2 save
-            pm2 restart cours-devops
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm install 
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npm run build
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npx pm2 delete cours-devops || true
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npx pm2 start npm --name "cours-devops" -- run start
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/npx pm2 save
+            /home/ubuntu/.nvm/versions/node/v24.1.0/bin/pm2 restart cours-devops
