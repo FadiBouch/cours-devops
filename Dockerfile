@@ -17,4 +17,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["docker", "compose", "up", "-d", "--build"]
+CMD ["npm", "run", "start"]
