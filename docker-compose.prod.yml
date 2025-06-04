@@ -1,0 +1,6 @@
+services:
+  web:
+    image: fadibouch/cours-devops/next-devops:latest
+    restart: always
+    ports:
+      - "80:3000"
