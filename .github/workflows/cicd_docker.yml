@@ -56,6 +56,7 @@ jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps: 
+      - run: echo ${{ github.actor }} |||| ${{ secrets.GHCR_PAT }}
       - name: Login to GitHub Container registery
         uses: docker/login-action@v3
         with:
