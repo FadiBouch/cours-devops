@@ -1,6 +1,6 @@
 services:
   next-devops-prod:
-    image: ghcr.io/fadibouch/cours-devops/next-devops:latest
+    image: ghcr.io/fadibouch/cours-devops/next-devops:main
     environment:
       - NODE_ENV=production
     ports:
