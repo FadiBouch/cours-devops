@@ -1,5 +1,5 @@
 services:
-  web:
+  next-devops-prod:
     image: ghcr.io/fadibouch/cours-devops/next-devops:latest
     environment:
       - NODE_ENV=production
