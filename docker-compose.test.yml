@@ -1,6 +1,6 @@
 services:
   next-devops-test:
-    image: ghcr.io/fadibouch/cours-devops/next-devops:dev
+    image: ghcr.io/fadibouch/cours-devops/next-devops:develop
     environment:
       - NODE_ENV=development
     ports:
