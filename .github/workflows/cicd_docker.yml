@@ -68,7 +68,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-  
+      # - id: lower-repo
+      #   name: Repository to lowercase
+      #   run: |
+      #     echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+      # TO USE:  ${{ steps.lower-repo.outputs.repository }}
+
+
       # - name: Build and push Docker image (manual)
       #   run: | 
       #     docker build -t ghcr.io/${{ github.repository }}/next-devops:latest .
@@ -82,6 +88,8 @@ jobs:
 
   deploy-docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs: build-docker
     steps:
       - name: Setup SSH key
@@ -94,7 +102,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Connecting to server via SSH
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo ${{ secrets.GHCR_PAT }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin && sudo docker pull ghcr.io/fadibouch/cours-devops/next-devops:latest && sudo docker compose up -f docker-compose.prod.yml -d"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo ${{ secrets.GITHUB_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin && sudo docker pull ghcr.io/fadibouch/cours-devops/next-devops:latest && sudo docker compose up -f docker-compose.prod.yml -d"
 
    
 
