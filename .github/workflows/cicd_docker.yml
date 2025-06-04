@@ -68,6 +68,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - id: lower-repo
+        name: Repository to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+
       # - name: Build and push Docker image (manual)
       #   run: | 
       #     docker build -t ghcr.io/${{ github.repository }}/next-devops:latest .
@@ -77,7 +82,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}/next-devops:latest
+          tags: ghcr.io/${{ steps.lower-repo.outputs.repository }}/next-devops:latest
 
   deploy-docker:
     runs-on: ubuntu-latest
