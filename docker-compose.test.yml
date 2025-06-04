@@ -1,0 +1,7 @@
+services:
+  web:
+    image: ghcr.io/fadibouch/cours-devops/next-devops:dev
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "8080:3000"

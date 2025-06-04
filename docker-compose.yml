@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "80:3000"
+    volumes:
+      - .:/app # ça vient remplacer les fichiers de code qu'on voit dans les lignes (de 11 à 16) dans le Dockerfile
+    command: ["npm", "run", "dev"]

@@ -1,6 +1,7 @@
 services:
   web:
     image: ghcr.io/fadibouch/cours-devops/next-devops:latest
-    restart: always
+    environment:
+      - NODE_ENV=production
     ports:
       - "80:3000"
