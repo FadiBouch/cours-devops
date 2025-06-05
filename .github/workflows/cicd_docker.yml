@@ -36,60 +36,25 @@ jobs:
           tags: ghcr.io/fadibouch/cours-devops/next-devops:${{ github.ref_name }}
 
   deploy-docker-prod:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: prod
-    permissions:
-      contents: read
     needs: build-docker
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - name: Setup SSH key
-        run: | 
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Add SSH server to known_hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: SCP docker-compose.prod.yml to server
-        run: |
-          scp docker-compose.prod.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/prod/.
-
-      - name: Connecting to server via SSH
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo ${{ secrets.GITHUB_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin && cd ~/prod && sudo docker compose -f docker-compose.prod.yml pull && sudo docker compose -f docker-compose.prod.yml up -d"
+    uses: /mnt/c/Users/G513/Desktop/CESI/CDA-1/DevOps/next-cda24/.github/workflows/resuable/deploy-docker.yml@main
+    with:
+      env: prod
+      branch: main
+      url: http://ec2-52-5-66-97.compute-1.amazonaws.com/
+    secrets:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
 
   deploy-docker-test:
-    if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    environment:
-      name: test
-    permissions:
-      contents: read
     needs: build-docker
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: develop
-      - name: Setup SSH key
-        run: | 
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Add SSH server to known_hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: SCP docker-compose.test.yml to server
-        run: |
-          scp docker-compose.test.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/test/.
-
-      - name: Connecting to server via SSH
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo ${{ secrets.GITHUB_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin && cd ~/test && sudo docker compose -f docker-compose.test.yml pull && sudo docker compose -f docker-compose.test.yml up -d"
-
-
-
+    uses: /mnt/c/Users/G513/Desktop/CESI/CDA-1/DevOps/next-cda24/.github/workflows/resuable/deploy-docker.yml@main
+    with:
+      env: test
+      branch: develop
+      url: http://ec2-52-5-66-97.compute-1.amazonaws.com/:8080
+    secrets:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
