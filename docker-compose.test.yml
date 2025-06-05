@@ -2,6 +2,6 @@ services:
   next-devops-test:
     image: ghcr.io/fadibouch/cours-devops/next-devops:develop
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     ports:
       - "8080:3000"
