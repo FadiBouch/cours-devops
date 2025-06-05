@@ -27,7 +27,6 @@ jobs:
       url: ${{ inputs.url }}
     permissions:
       contents: read
-    needs: build-docker
     steps:
       - uses: actions/checkout@v4
         with:
