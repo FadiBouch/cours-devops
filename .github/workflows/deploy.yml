@@ -19,8 +19,8 @@ on:
         required: true
 
 jobs:
- deploy-docker:
-    if: github.ref == 'refs/heads/${{ inputs.branch }}'
+ deploy:
+    if: github.ref_name == inputs.branch
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.env }}
