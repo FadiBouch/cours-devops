@@ -3,5 +3,16 @@ services:
     image: ghcr.io/fadibouch/cours-devops/next-devops:main
     environment:
       - NODE_ENV=production
-    ports:
-      - "80:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.next-prod.rule=Host(`ec2-52-5-66-97.compute-1.amazonaws.com`)"
+      - "traefik.http.routers.next-prod.entrypoints=web"
+      - "traefik.http.middlewares.test-auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/"
+      - "traefik.http.routers.next-prod.middlewares=test-auth@docker"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+    name: web

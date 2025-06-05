@@ -1,12 +1,6 @@
-FROM debian:12
+FROM node:24-alpine3.22 AS builder
 
 LABEL org.opencontainers.image.source=http://github.com/fadibouch/cours-devops
-
-RUN apt-get update -yq \
-    && apt-get install curl gnupg -yq \
-    && curl -sL https://deb.nodesource.com/setup_24.x | bash \
-    && apt-get install nodejs -yq \
-    && apt-get clean -y
 
 ADD . /app/
 
@@ -14,6 +8,15 @@ WORKDIR /app
 
 RUN npm install
 RUN npm run build
+
+
+FROM node:24-alpine3.22 AS next
+
+COPY --from=builder /app/.next /app/.next
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/package.json /app/package.json
+
+WORKDIR /app
 
 EXPOSE 3000
 

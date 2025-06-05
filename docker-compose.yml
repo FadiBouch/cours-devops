@@ -2,6 +2,7 @@ services:
   web:
     build:
       context: .
+      target: next # le nom de l'image dans le Dockerfile
     environment:
       - NODE_ENV=development
     ports:
