@@ -38,6 +38,8 @@ jobs:
   deploy-docker-prod:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment:
+      name: prod
     permissions:
       contents: read
     needs: build-docker
@@ -64,6 +66,8 @@ jobs:
   deploy-docker-test:
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
+    environment:
+      name: test
     permissions:
       contents: read
     needs: build-docker
