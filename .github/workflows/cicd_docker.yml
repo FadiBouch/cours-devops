@@ -7,7 +7,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm audit --audit-level=high
 
-
   test:
     strategy:
       matrix:
@@ -19,7 +18,7 @@ jobs:
       - name: run Cypress test 
         uses: cypress-io/github-action@v6
         with: 
-          install: false
+          install: true
           start: npm run dev
           browser: ${{ matrix.browser }}
       - name: Upload Cypress videos
@@ -51,13 +50,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # - id: lower-repo
-      #   name: Repository to lowercase
-      #   run: |
-      #     echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
-      # TO USE:  ${{ steps.lower-repo.outputs.repository }}
-
 
       # - name: Build and push Docker image (manual)
       #   run: | 
