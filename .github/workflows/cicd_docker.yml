@@ -37,7 +37,7 @@ jobs:
 
   deploy-docker-prod:
     needs: build-docker
-    uses: /mnt/c/Users/G513/Desktop/CESI/CDA-1/DevOps/next-cda24/.github/workflows/deploy-docker.yml@main
+    uses: fadibouch/cours-devops/.github/workflows/deploy-docker.yml@main
     with:
       env: prod
       branch: main
@@ -49,7 +49,7 @@ jobs:
 
   deploy-docker-test:
     needs: build-docker
-    uses: /mnt/c/Users/G513/Desktop/CESI/CDA-1/DevOps/next-cda24/.github/workflows/deploy-docker.yml@main
+    uses: fadibouch/cours-devops/.github/workflows/deploy-docker.yml@main
     with:
       env: test
       branch: develop
