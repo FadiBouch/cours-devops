@@ -1,9 +1,44 @@
 on: [push]
 
 jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm audit --audit-level=high
+
+
+  test:
+    strategy:
+      matrix:
+        browser: [chrome, edge]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: run Cypress test 
+        uses: cypress-io/github-action@v6
+        with: 
+          install: false
+          start: npm run dev
+          browser: ${{ matrix.browser }}
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos-${{ matrix.browser }}
+          path: cypress/videos/
+          retention-days: 5
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-${{ matrix.browser }}
+          path: cypress/screenshots
+          retention-days: 5
 
   build-docker:
     runs-on: ubuntu-latest
+    needs: test
     permissions:
       contents: read
       packages: write
